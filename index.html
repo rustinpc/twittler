@@ -3,26 +3,35 @@
   <head>
     <script src="jquery.js"></script>
     <script src="data_generator.js"></script>
+    <title>Twittler</title>
   </head>
   <body>
     <script>
 
       $(document).ready(function(){
-        setInterval(function(){
-        var $body = $('body');
-        $body.html('');
 
-        var index = streams.home.length - 1;
-        while(index >= 0){
-          var tweet = streams.home[index];
-          var $tweet = $('<div></div>');
-          $tweet.text('@' + tweet.user + ': ' + tweet.message + ' -- ' + tweet.created_at);
-          $tweet.appendTo($body);
-          index -= 1;
+        var stream = 'all';
+
+        function printTweets() {
+          var index = 0;
+          while(index < streams.home.length){
+            var tweet = streams.home[index];
+            var $tweet = $('<li></li>');
+            $tweet.text('@' + tweet.user + ': ' + tweet.message + ' -- ' + tweet.created_at);
+            $tweet.prependTo($('#tweets'));
+            index += 1;
+          }
         }
+
+        setInterval(function(){
+        $('#tweets').html('');
+        printTweets();
 
       },1000)});
 
     </script>
+    <h1 class="site-title">Twittler</h1>
+    <p id="feed-title"></p>
+    <ul id="tweets"></ul>
   </body>
 </html>
