@@ -10,15 +10,25 @@
     <script>
 
       $(document).ready(function(){
+        var userSelect = '';
+        var feedDisplayer = '';
 
-        var feedDisplayer = setInterval(function(){
+        function currentFeed(userSelect) {
           $('#tweets').html('');
-          printTweets();
+          printTweets(userSelect);
+        }
+
+        function feedGenerator(userSelect) {
+          feedDisplayer = setInterval(function(){
+          $('#tweets').html('');
+          printTweets(userSelect);
           },1000);
-        var stream = 'all';
-        var feedControl = true;
+        }
+        feedGenerator();
 
         
+        var stream = 'all';
+        var feedControl = true;
 
         $('.flow-control').on('click', function() {
          $(this).toggleClass("flowing");
@@ -31,10 +41,7 @@
           feedControl = false;
          }
          else {
-          feedDisplayer = setInterval(function(){
-          $('#tweets').html('');
-          printTweets();
-          },1000);
+          feedGenerator(window.userSelect);
           feedControl = true;
          }
         });
@@ -42,7 +49,7 @@
 
         
 
-        function printTweets() {
+        function printTweets(userSelect) {
           var index = 0;
           while(index < streams.home.length){
             var tweet = streams.home[index];
@@ -78,19 +85,48 @@
               hoursDisplay = tweet.created_at.getHours();
               ampm = 'AM';
             }
-            var $tweet = $('<li class="' + tweet.user + '"><span class="' + tweet.user + '">@' + tweet.user + '</span><span class="dateFeed">' + hoursDisplay + ':' + minutesDisplay + ':' + secondsDisplay + ' ' + ampm + ' (' + (tweet.created_at.getMonth() + 1) + '/' + tweet.created_at.getDate() + '/' + tweet.created_at.getFullYear() + ')</span><span class="messageFeed">' + tweet.message + '</span></li>');
-            $tweet.prependTo($('#tweets'));
+            var $tweet = $('<li class="' + tweet.user + '"><span class="user-name">@' + tweet.user + '</span><span class="dateFeed">' + hoursDisplay + ':' + minutesDisplay + ':' + secondsDisplay + ' ' + ampm + ' (' + (tweet.created_at.getMonth() + 1) + '/' + tweet.created_at.getDate() + '/' + tweet.created_at.getFullYear() + ')</span><span class="messageFeed">' + tweet.message + '</span></li>');
+            if (!userSelect) {
+              $tweet.prependTo($('#tweets'));
+            }
+            else if (tweet.user === userSelect) {
+              $tweet.prependTo($('#tweets'));
+            }
+            
             index += 1;
           }
+          $('.user-name').on('click', function() {
+            $('#feed-title').text($(this).text() + "'s Feed");
+            $('.all').text("(back to all)");
+            var classSelect = $(this).text().slice(1);
+            window.userSelect = classSelect;
+            clearInterval(feedDisplayer);
+            if (feedControl) {
+              feedGenerator(classSelect);
+            }
+            else {
+              currentFeed(classSelect);
+            }
+          });
         }
+        $('.all').on('click', function() {
+            $('#feed-title').text("People You're Following");
+            $('.all').text("");
+            clearInterval(feedDisplayer);
+            if (feedControl) {
+              feedGenerator();
+            }
+            else {
+              currentFeed();
+            }
+        });
 
         
 });
 
     </script>
     <h1 class="site-title">Twittler</h1>
-    <div id="pauseStart"><span class="flow-control flowing">Pause Feed</span></div>
-    <p id="feed-title"></p>
+    <div id="pauseStart"><p><span id="feed-title">People You're Following</span><span class="all"></span></p><span class="flow-control flowing">Pause Feed</span></div>
     <ul id="tweets"></ul>
   </body>
 </html>

@@ -6,10 +6,22 @@
 	text-align: center;
 }
 
+#feed-title {
+	font-weight: bold;
+	font-size: x-large;
+	margin: 0 20px 0 20px;
+}
+
+.all {
+	cursor: pointer;
+}
+
 .flow-control {
 	padding: 10px;
 	border-radius: 8px;
 	color: white;
+	cursor: pointer;
+	margin: 0 20px 0 20px;
 }
 
 .paused {
@@ -25,6 +37,7 @@
     width: 500px;
     margin-right: auto;
     margin-left: auto;
+    margin-top: 40px;
 }
 
 #tweets li {
@@ -35,11 +48,8 @@
     border-radius: 10px;
 }
 
-.userNameFeed {
-	display: block;
-	float: left;
-	text-align: left;
-	width: 220px;
+.user-name {
+	cursor: pointer;
 	font-weight: bold;
 }
 
@@ -54,6 +64,5 @@
 	display: block;
 	float: right;
 	text-align: right;
-	width: 200px;
 	font-style: italic;
 }
