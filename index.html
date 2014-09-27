@@ -10,7 +10,7 @@
     <script>
 
       $(document).ready(function(){
-console.log(streams);
+
         var feedDisplayer = setInterval(function(){
           $('#tweets').html('');
           printTweets();
@@ -37,27 +37,8 @@ console.log(streams);
           },1000);
           feedControl = true;
          }
-         //clearInterval(feedDisplayer);
-        });
-/*
-        $('.flowing').on('click', function() {
-          //$(this).removeClass('flowing');
-          //$(this).addClass('paused');
-          $('.paused').text('Restart Feed');
         });
 
-        $('.flowing').on('click', function() {
-          clearInterval(feedDisplayer);
-        });
-
-        $('.flow-control.paused').on('click', function() {
-          $(this).text('TEST');
-          feedDisplayer = setInterval(function(){
-          $('#tweets').html('');
-          printTweets();
-          },1000);
-        });
-        */
 
         
 
@@ -89,12 +70,15 @@ console.log(streams);
               hoursDisplay = tweet.created_at.getHours();
               ampm = 'PM';
             }
+            else if (tweet.created_at.getHours() === 0) {
+              hoursDisplay = 12;
+              ampm = 'AM';
+            }
             else {
               hoursDisplay = tweet.created_at.getHours();
               ampm = 'AM';
             }
-            var $tweet = $('<li><span class="userNameFeed">@' + tweet.user + '</span><span class="dateFeed">' + hoursDisplay + ':' + minutesDisplay + ':' + secondsDisplay + ' ' + ampm + ' (' + (tweet.created_at.getMonth() + 1) + '/' + tweet.created_at.getDate() + '/' + tweet.created_at.getFullYear() + ')</span><span class="messageFeed">' + tweet.message + '</span></li>');
-            //$tweet.append('@' + tweet.user + ': ' + tweet.message + ' -- ' + hoursDisplay + ':' + tweet.created_at.getMinutes() + ':' + secondsDisplay + ' ' + ampm + ' (' + (tweet.created_at.getMonth() + 1) + '/' + tweet.created_at.getDate() + '/' + tweet.created_at.getFullYear() + ')');
+            var $tweet = $('<li class="' + tweet.user + '"><span class="' + tweet.user + '">@' + tweet.user + '</span><span class="dateFeed">' + hoursDisplay + ':' + minutesDisplay + ':' + secondsDisplay + ' ' + ampm + ' (' + (tweet.created_at.getMonth() + 1) + '/' + tweet.created_at.getDate() + '/' + tweet.created_at.getFullYear() + ')</span><span class="messageFeed">' + tweet.message + '</span></li>');
             $tweet.prependTo($('#tweets'));
             index += 1;
           }
