@@ -3,34 +3,109 @@
   <head>
     <script src="jquery.js"></script>
     <script src="data_generator.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
     <title>Twittler</title>
   </head>
   <body>
     <script>
 
       $(document).ready(function(){
-
+console.log(streams);
+        var feedDisplayer = setInterval(function(){
+          $('#tweets').html('');
+          printTweets();
+          },1000);
         var stream = 'all';
+        var feedControl = true;
+
+        
+
+        $('.flow-control').on('click', function() {
+         $(this).toggleClass("flowing");
+         $(this).toggleClass("paused");
+         $(this).text(function(i, text) {
+          return text === "Pause Feed" ? "Restart Feed" : "Pause Feed";
+         });
+         if (feedControl) {
+          clearInterval(feedDisplayer);
+          feedControl = false;
+         }
+         else {
+          feedDisplayer = setInterval(function(){
+          $('#tweets').html('');
+          printTweets();
+          },1000);
+          feedControl = true;
+         }
+         //clearInterval(feedDisplayer);
+        });
+/*
+        $('.flowing').on('click', function() {
+          //$(this).removeClass('flowing');
+          //$(this).addClass('paused');
+          $('.paused').text('Restart Feed');
+        });
+
+        $('.flowing').on('click', function() {
+          clearInterval(feedDisplayer);
+        });
+
+        $('.flow-control.paused').on('click', function() {
+          $(this).text('TEST');
+          feedDisplayer = setInterval(function(){
+          $('#tweets').html('');
+          printTweets();
+          },1000);
+        });
+        */
+
+        
 
         function printTweets() {
           var index = 0;
           while(index < streams.home.length){
             var tweet = streams.home[index];
-            var $tweet = $('<li></li>');
-            $tweet.text('@' + tweet.user + ': ' + tweet.message + ' -- ' + tweet.created_at);
+            var secondsDisplay = '';
+            if (tweet.created_at.getSeconds() < 10) {
+              secondsDisplay = '0' + tweet.created_at.getSeconds();
+            }
+            else {
+              secondsDisplay = tweet.created_at.getSeconds();
+            }
+            var minutesDisplay = '';
+            if (tweet.created_at.getMinutes() < 10) {
+              minutesDisplay = '0' + tweet.created_at.getMinutes();
+            }
+            else {
+              minutesDisplay = tweet.created_at.getMinutes();
+            }
+            var ampm = "";
+            var hoursDisplay = '';
+            if (tweet.created_at.getHours() > 12) {
+              hoursDisplay = tweet.created_at.getHours() - 12;
+              ampm = 'PM';
+            }
+            else if (tweet.created_at.getHours() === 12) {
+              hoursDisplay = tweet.created_at.getHours();
+              ampm = 'PM';
+            }
+            else {
+              hoursDisplay = tweet.created_at.getHours();
+              ampm = 'AM';
+            }
+            var $tweet = $('<li><span class="userNameFeed">@' + tweet.user + '</span><span class="dateFeed">' + hoursDisplay + ':' + minutesDisplay + ':' + secondsDisplay + ' ' + ampm + ' (' + (tweet.created_at.getMonth() + 1) + '/' + tweet.created_at.getDate() + '/' + tweet.created_at.getFullYear() + ')</span><span class="messageFeed">' + tweet.message + '</span></li>');
+            //$tweet.append('@' + tweet.user + ': ' + tweet.message + ' -- ' + hoursDisplay + ':' + tweet.created_at.getMinutes() + ':' + secondsDisplay + ' ' + ampm + ' (' + (tweet.created_at.getMonth() + 1) + '/' + tweet.created_at.getDate() + '/' + tweet.created_at.getFullYear() + ')');
             $tweet.prependTo($('#tweets'));
             index += 1;
           }
         }
 
-        setInterval(function(){
-        $('#tweets').html('');
-        printTweets();
-
-      },1000)});
+        
+});
 
     </script>
     <h1 class="site-title">Twittler</h1>
+    <div id="pauseStart"><span class="flow-control flowing">Pause Feed</span></div>
     <p id="feed-title"></p>
     <ul id="tweets"></ul>
   </body>

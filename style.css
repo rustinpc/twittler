@@ -1,0 +1,59 @@
+.site-title {
+	text-align: center;
+}
+
+#pauseStart {
+	text-align: center;
+}
+
+.flow-control {
+	padding: 10px;
+	border-radius: 8px;
+	color: white;
+}
+
+.paused {
+	background-color: green;
+}
+
+.flowing {
+	background-color: red;
+}
+
+#tweets {
+    list-style: none;
+    width: 500px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+#tweets li {
+    padding: 20px;
+    margin-bottom: 20px;
+    background-color: aliceblue;
+    border: 2px solid navy;
+    border-radius: 10px;
+}
+
+.userNameFeed {
+	display: block;
+	float: left;
+	text-align: left;
+	width: 220px;
+	font-weight: bold;
+}
+
+.messageFeed {
+	display: block;
+	clear: both;
+	padding-top: 20px;
+	font-size: x-large;
+}
+
+.dateFeed {
+	display: block;
+	float: right;
+	text-align: right;
+	width: 200px;
+	font-style: italic;
+}
