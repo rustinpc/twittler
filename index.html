@@ -112,6 +112,7 @@
         $('.all').on('click', function() {
             $('#feed-title').text("People You're Following");
             $('.all').text("");
+            window.userSelect = '';
             clearInterval(feedDisplayer);
             if (feedControl) {
               feedGenerator();
